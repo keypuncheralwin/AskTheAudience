@@ -1,0 +1,31 @@
+
+.newPollContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.newPoll{
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    
+}
+
+.newPollHeader{
+text-align: center;
+}
+
+
+
+.pollFooter{
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width: 940px) {
+    .newPoll{
+        width: 80vw;
+    }
+
+}

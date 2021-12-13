@@ -1,0 +1,64 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Balthazar&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #22262a;
+  --background: rgb(255, 255, 255);
+  --text: black;
+  --accent: #EC255A;
+  --link: #0645AD;
+  --cardBackground: rgb(226, 226, 226);
+  --cardBorder: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover{
+  color: var(--accent);
+}
+
+
+body {
+  background-color: var(--background);
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1.5;
+  color: var(--text);
+  transition: all .5s;
+}
+
+.container{
+  height: 80vh;
+  display: grid;
+  justify-content: center;
+  margin: 20px;
+}
+
+.content{
+  padding-top: 60px;
+  padding-bottom: 60px;
+  /* width: 940px;
+  display: grid;
+  place-items: center; */
+}
+
+@media screen and (max-width: 940px) {
+
+  .content{
+    padding-top: 10px;
+    width: 100%;
+  }
+}

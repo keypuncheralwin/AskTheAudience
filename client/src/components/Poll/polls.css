@@ -1,0 +1,39 @@
+.card{
+    display: grid;
+    grid-template-rows: 1fr 2fr 0.4fr;
+}
+
+.cardHeader{
+    color: var(--text);
+    background-color: rgb(143, 143, 143);
+}
+
+.cardContent{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cardButtons{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+
+.cardCollection{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    
+}
+
+@media screen and (max-width: 850px) {
+
+    .cardCollection{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 10px;
+    }
+  }
