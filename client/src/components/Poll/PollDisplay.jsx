@@ -6,7 +6,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-
+import Typography from '@mui/material/Typography';
 
 function PollDisplay(props){
 
@@ -15,6 +15,7 @@ function PollDisplay(props){
     const [isPollEmpty, setIsPollEmpty] = useState(true)
     const [dataWithPercentage, setDataWithPercentage] = useState(false)
     const [radioValue, setRadioValue] = useState('');
+    const [disableRadio, setDisableRadio] = useState(false)
 
     useEffect(() => {
         
@@ -22,7 +23,9 @@ function PollDisplay(props){
         
         const total = options.map(item => {return item.option.votes}).reduce((a, b) => a + b, 0)
 
-        if(total > 0){setIsPollEmpty(false)}
+        if(total > 0){
+            setIsPollEmpty(false) 
+            setDisableRadio(true)}
         
         const updatedData = options.map(item => {
             item.option.percentage = Math.round(item.option.votes / total * 100)
@@ -34,70 +37,75 @@ function PollDisplay(props){
     },[options])
 
        
-
-
-
-    const handleRadio = (event) => {
-      setRadioValue(event.target.value);
-    };
-    
-    
-
-    const [isClicked, setIsClicked] = useState(false)
-
-    
-
-
     function handleClick(event,index,optionName){
         const currentVotes = options[index].option.votes
         console.log(options[index].option.votes)
         updateVotes(index)
     }
 
-    function pollDisplayer(){
-        return(
-        dataWithPercentage.map((item,index) => {
-            
-            return (
-                <div className="optionText" key={index+1}><h1>{item.option.name}</h1>
-                <Box onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
+
+    const handleRadio = (event) => {
+        
+      setRadioValue(event.target.value);
+      const index = event.target.value
+      updateVotes(index)
+
+    };
     
-                 </div>
+    
+
+    const [isClicked, setIsClicked] = useState(false)
+
+
+    function pollDisplayer(){
+
+        if(isPollEmpty){
+            return(
+            
+                <FormControl component="fieldset">
+                <FormLabel component="legend">Gender</FormLabel>
+                <RadioGroup ria-label="gender" name="controlled-radio-buttons-group" value={radioValue} onChange={ handleRadio } >
+                <h3>Be the first to vote on this poll!</h3>
+            {dataWithPercentage.map((item,index) => {
+                
+                return (
+                    <div className="optionText" key={index+1} >
+                    <FormControlLabel disabled={disableRadio} value={index} control={<Radio />} label={item.option.name[0]} />
+                    </div>
+                )
+            })}
+    
+            </RadioGroup>
+            </FormControl>
+    
             )
-        })
-        )
+        }else{
+
+            return(
+                dataWithPercentage.map((item,index) => {
+                    
+                    return (
+                        <div className="optionText" key={index+1}><Typography variant="body3">{item.option.name}</Typography>
+                        <Box onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}>{item.option.percentage}%</Box>
+            
+                         </div>
+                    )
+                })
+                )
+        }
+
+        
     } 
 
-    function pollDisplayer2(){
-        return(
-            
-            <FormControl component="fieldset">
-            <FormLabel component="legend">Gender</FormLabel>
-            <RadioGroup ria-label="gender" name="controlled-radio-buttons-group" value={radioValue} onChange={ handleRadio }>
-
-        {dataWithPercentage.map((item,index) => {
-            
-            return (
-                <div className="optionText" key={index+1} >
-                <FormControlLabel  value={item.option.name[0]} control={<Radio />} label={item.option.name[0]} />
-                </div>
-            )
-        })}
-
-        </RadioGroup>
-        </FormControl>
-
-        )
-    } 
 
 
 
 
     return (
-        <div className="poll">
+        <div className="pollBars">
 
         {
-            dataWithPercentage ? pollDisplayer2() : 'loading polls'
+            dataWithPercentage ? pollDisplayer() : 'loading polls'
         }               
       
        

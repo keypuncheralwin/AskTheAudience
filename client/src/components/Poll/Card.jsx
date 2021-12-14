@@ -11,7 +11,7 @@ import { MdHowToVote } from "react-icons/md";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 
 
-export default function RecipeReviewCard(props) {
+export default function PollCard(props) {
 
   const pollId = props.pollId
   const cardStatus = props.status

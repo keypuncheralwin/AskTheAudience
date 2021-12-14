@@ -86,7 +86,7 @@ export default function NewPoll(props){
             if( i === 0){formData["title"] = submittedData[i][1]}
             if( i === 1){formData["description"] = submittedData[i][1]}
             if( i >= 2){
-                formData["options"].push({option : {name : [submittedData[i][1]], votes : 25} })
+                formData["options"].push({option : {name : [submittedData[i][1]], votes : 0} })
             }
     
         }
