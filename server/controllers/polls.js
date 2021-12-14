@@ -49,16 +49,26 @@ router.get('/poll/:id', async (req,res) => {
     }
 })
 
-router.post('/poll/vote', checkAuth, async (req,res) => {
+router.post('/poll/vote', async (req,res) => {
     const pollId = req.body.pollId
     const optionId = req.body.optionId
     console.log(pollId)
     console.log(optionId)
+    const query = {
+        "$inc": {}
+    }
+    query["$inc"][`options.${optionId}.option.votes`] = 1
+    // "options."+pollId+".option.votes"
+
+
     try{
-        const updateVote = await Polls.updateOne({
-            "_id": ObjectId(pollId)},
-            options[optionId] : options.votes)
-        console.log(updateVote[0])
+        const updateVote = await Polls.findOneAndUpdate(
+        {
+            "_id": ObjectId(pollId)
+        },
+        query
+        )
+        res.json('lol')
     }catch(err){
         console.log(err)
         res.json({message: err})

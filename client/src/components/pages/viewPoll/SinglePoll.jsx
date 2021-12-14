@@ -12,7 +12,7 @@ export default function SinglePoll(props){
 
   useEffect(() => {
     if(!state){return navigate("/myPolls")} 
-
+    
     const { id } = state;
     axios.get(`/api/polls/poll/${id}`).then(res => {
         setPollData(res.data)
@@ -27,10 +27,16 @@ export default function SinglePoll(props){
 
     const { id } = state;
     console.log(id)
+    console.log(index)
     console.log(pollData.options[index].option.votes)
     const updateData = {pollId: id, optionId: index}
     axios.post(`/api/polls/poll/vote`, updateData).then(res => {
-        setRefreshPoll(!updateVotes)
+        if(res.data){
+            console.log('trigger')
+            setRefreshPoll(!refreshPoll)
+        }
+        
+        
 
     }).catch(err => {
         console.log(err)
@@ -40,11 +46,13 @@ export default function SinglePoll(props){
   }
 
 
+
+
     return(
 
         
         <div>
-            {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes }/> : 'loading'}
+            {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes } refreshPoll={refreshPoll}/> : 'loading'}
         </div>
     )
 }
