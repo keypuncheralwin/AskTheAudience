@@ -7,7 +7,17 @@ const ObjectId = Mongoose.Types.ObjectId
 
 router.use(express.json());
 
-
+router.get('/allPolls', async (req,res) => {
+    
+    try{
+        const myPolls = await Polls.find().sort( [['_id', -1]] )
+        
+        res.json(myPolls)
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
 
 
 router.post('/new',checkAuth, (req,res) => {
@@ -52,6 +62,7 @@ router.get('/poll/:id', async (req,res) => {
 
 router.post('/poll/vote',checkAuth, async (req,res) => {
     const username = req.userData.username
+    console.log(username,'???????????????????????')
     const pollId = req.body.pollId
     const optionIndex = req.body.optionId
     
@@ -70,7 +81,7 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
             if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
             if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
             
-            if(username === pollCheck[0].username){ return res.status(403).json({message: "You can't vote on your own poll"})}
+            if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
             Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
                 res.json("You've successfully voted")
             }) 
@@ -94,15 +105,3 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
 
 module.exports = router;
 
-// try{
-//     const updateVote = await Polls.findOneAndUpdate(
-//     {
-//         "_id": ObjectId(pollId)
-//     },
-//     query
-//     )
-//     res.json('lol')
-// }catch(err){
-//     console.log(err)
-//     res.json({message: err})
-// }

@@ -63,14 +63,14 @@ function PollDisplay(props){
             return(
             
                 <FormControl component="fieldset">
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup ria-label="gender" name="controlled-radio-buttons-group" value={radioValue} onChange={ handleRadio } >
-                <h3>Be the first to vote on this poll!</h3>
+                <FormLabel component="legend" >Be the first to vote on this poll!</FormLabel>
+                <RadioGroup ria-label="Radio Poll" name="controlled-radio-buttons-group" value={radioValue} onChange={ handleRadio } >
+                
             {dataWithPercentage.map((item,index) => {
                 
                 return (
                     <div className="optionText" key={index+1} >
-                    <FormControlLabel disabled={disableRadio} value={index} control={<Radio />} label={item.option.name[0]} />
+                    <FormControlLabel  disabled={disableRadio} value={index} control={<Radio  sx={{ color: `var(--text)`,'&.Mui-checked': { color: `var(--text)` }}} />} label={item.option.name[0]} />
                     </div>
                 )
             })}

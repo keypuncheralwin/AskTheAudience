@@ -58,11 +58,19 @@ export default function SinglePoll(props){
         
 
     }).catch(err => {
-        console.log(err)
-        setShowStatus(true)
-        setStatusText(err.response.data.message)
-        setStatusColor('error')
-        setTimeout(function(){ setShowStatus(false) }, 4000); 
+        console.log(err.response)
+        if(err.response.status === 403){
+          setShowStatus(true)
+          setStatusText("you need to be logged in to vote")
+          setStatusColor('error')
+          setTimeout(function(){ setShowStatus(false) }, 4000); 
+        }else{
+          setShowStatus(true)
+          setStatusText(err.response.data.message)
+          setStatusColor('error')
+          setTimeout(function(){ setShowStatus(false) }, 4000); 
+        }
+        
     }) 
 
 
@@ -83,7 +91,7 @@ export default function SinglePoll(props){
             }}>
             <CardHeader className='cardHeader'
         avatar={
-          <Avatar sx={{ bgcolor: `var(--accent)` }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: `var(--accent)` }} aria-label="user logo">
             {pollData ? pollData.username.toUpperCase().substring(0,2) : 'Loading Poll'}
           </Avatar>
         }
