@@ -42,7 +42,7 @@ const Navbar = (props) => {
             
             
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-            <NavLink to="/" className={({ isActive }) => (isActive ? 'selected' : '')} ><li onClick={handleClick} className='nav-item'>Trending Polls</li></NavLink>
+            <NavLink to="/trending" className={({ isActive }) => (isActive ? 'selected' : '')} ><li onClick={handleClick} className='nav-item'>Trending Polls</li></NavLink>
             <NavLink to="/recent" className={({ isActive }) => (isActive ? 'selected' : '')} ><li onClick={handleClick} className='nav-item'>Recent Polls</li></NavLink>
              
             { !userInfo ? <NavLink to="/register" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleClick} className='nav-item'>Register</li></NavLink> : null}

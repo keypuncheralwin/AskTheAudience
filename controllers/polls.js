@@ -60,9 +60,37 @@ router.get('/poll/:id', async (req,res) => {
     }
 })
 
+router.delete('/poll/:id',checkAuth, (req,res) => {
+    const pollId = req.params.id
+    const username = req.userData.username
+    console.log(username)
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
+                        
+            if(username === pollCheck[0].username){ 
+
+                Polls.find({"_id": ObjectId(pollId)}).deleteOne().exec().then(result =>{ res.json({message: "The poll has been deleted"}) }).catch(err => {
+                    console.log(err)
+                    res.json({message: err})
+                })
+
+            }else{
+                return res.status(401).json({message: "You're not authorised to delete this poll"})
+            } 
+
+            
+                
+        }).catch(err => {
+            console.log(err)
+            res.json({message: err})
+        })
+})
+
 router.post('/poll/vote',checkAuth, async (req,res) => {
     const username = req.userData.username
-    console.log(username,'???????????????????????')
+    
     const pollId = req.body.pollId
     const optionIndex = req.body.optionId
     
@@ -81,22 +109,28 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
             if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
             if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
             
-            if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
-            Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
-                res.json("You've successfully voted")
-            }) 
-
-            if(pollCheck[0]['whoVoted'][0][`${username}`] >= 0){ 
+            const hasVoted = pollCheck[0]['whoVoted'].filter(item => {return item[`${username}`]})
+            
+            if(hasVoted.length > 0){ 
                 
                 console.log("we're in")
-                const index = pollCheck[0]['whoVoted'][0][`${username}`]
+                const index = hasVoted[0][`${username}`]
                 const votedOption = pollCheck[0].options[index].option.name
                 console.log(votedOption)
-                return res.status(404).json( {message: `You've already voted on this poll, you chose --  ${votedOption}`} )}
+                return res.status(404).json( {message: `You've already voted on this poll, you chose`} )}
+
+            if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
+            Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
+                res.json({message:"You've successfully voted"})
+            }).catch(err => {console.log(err)}) 
+
+            
             
                 
-        }
-        )
+        }).catch(err => {
+            console.log(err)
+            res.json({message: err})
+        })
 
 
     

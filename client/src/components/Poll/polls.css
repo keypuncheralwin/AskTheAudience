@@ -53,9 +53,9 @@
     justify-content: center;
     align-items: center;
 }
-.cardPoll{
+/* .cardPoll{
     min-width: 500px;
-}
+} */
 
 .pollBarsContiner{
     width: 500px;
@@ -83,6 +83,20 @@
 .percentageContainer{
     display: flex;
     justify-content: space-between;
+}
+
+.option{
+    cursor: pointer;
+}
+
+.option:hover{
+    background-color: var(--accent);
+}
+
+.optionSelected{
+    transition: width 200ms;
+    cursor: default;
+
 }
 
 @media screen and (max-width: 850px) {

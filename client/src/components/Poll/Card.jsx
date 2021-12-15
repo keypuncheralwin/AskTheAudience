@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+
+import { NavLink } from "react-router-dom";
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdHowToVote } from "react-icons/md";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
 import randomColor from "./profileColor"
+import DeletePoll from './DeletePoll';
 
 export default function PollCard(props) {
 
+
+  const manageDeleteRefresh = props.manageDeleteRefresh
   const pollId = props.pollId
   const cardStatus = props.status
   const usernameLogo = props.username.toUpperCase().substring(0,2)
@@ -31,13 +33,13 @@ export default function PollCard(props) {
      }}>
       <CardHeader className='cardHeader'
         avatar={
-          <Avatar sx={{ bgcolor: `${randomColor()}` }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: `${cardStatus === 'current' ? 'var(--accent)' : randomColor()}` }} aria-label="recipe">
             {usernameLogo}
           </Avatar>
         }
         action={
           <IconButton aria-label="settings" sx={{ color: 'var(--text)' }}>
-            <RiDeleteBin5Fill />
+            {cardStatus === 'current' && <DeletePoll title={title} pollId={pollId} manageDeleteRefresh={manageDeleteRefresh}/> }
           </IconButton>
         }
         title={username }

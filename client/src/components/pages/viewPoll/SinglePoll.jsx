@@ -40,6 +40,7 @@ export default function SinglePoll(props){
 
   },[refreshPoll]);
 
+
   function updateVotes(index){
 
     const { id } = state;
@@ -52,24 +53,27 @@ export default function SinglePoll(props){
         console.log(res)
         setRefreshPoll(!refreshPoll)
         setShowStatus(true)
-        setStatusText(res.data)
+        setStatusText(res.data.message)
         setStatusColor('success')
         setTimeout(function(){ setShowStatus(false) }, 4000);   
         
 
     }).catch(err => {
         console.log(err.response)
-        if(err.response.status === 403){
+        
+        if(err.response.data === 'Forbidden'){
           setShowStatus(true)
-          setStatusText("you need to be logged in to vote")
+          setStatusText('You need to login to vote')
           setStatusColor('error')
           setTimeout(function(){ setShowStatus(false) }, 4000); 
+
         }else{
           setShowStatus(true)
           setStatusText(err.response.data.message)
           setStatusColor('error')
           setTimeout(function(){ setShowStatus(false) }, 4000); 
         }
+              
         
     }) 
 

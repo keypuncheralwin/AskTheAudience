@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { RiChatPollFill } from "react-icons/ri";
 import Link from '@mui/material/Link';
 
-const RecentPolls = (props) => {
+const TrendingPolls = (props) => {
 
     const { userInfo, manageLogin } = props;
 
@@ -43,13 +43,20 @@ const RecentPolls = (props) => {
     }
 
   function dataExtractor(data){
-      
+
+    const dataWithTotalVotes = data.map( item => {
+      const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)
+      item['totalVotes'] = totalVotes
+      return item
+    })
+
+    const sortedData = dataWithTotalVotes.sort((a,b) => {return  b.totalVotes - a.totalVotes})
+   
     return (
         <>
-      {data.map(item => {
-        const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)
-          
-          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'} totalVotes={totalVotes}/>)
+      {sortedData.map(item => {
+
+          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'trending'} totalVotes={item.totalVotes}/>)
         
       })}
       </>
@@ -68,7 +75,7 @@ const RecentPolls = (props) => {
     )
 }
 
-export default RecentPolls
+export default TrendingPolls
 
 
 

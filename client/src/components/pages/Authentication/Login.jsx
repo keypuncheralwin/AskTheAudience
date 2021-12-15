@@ -61,7 +61,7 @@ export default function Login(props) {
         console.log('user logged in',res)
         setIsLoggedIn(true)
         manageLogin(getLoggedInUser)
-        navigate("/")        
+        navigate("/myPolls")        
       })
       .catch(error => {
         

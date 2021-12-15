@@ -11,6 +11,8 @@ import Navbar from "./components/Navbar/Navbar";
 import NewPoll from "./components/pages/CreatePoll/NewPoll"
 import getLoggedInUser from "./components/pages/Authentication/checkAuth"
 import SinglePoll from './components/pages/viewPoll/SinglePoll';
+import AlertDialog from './test'
+import TrendingPolls from './components/pages/TrendingPolls/TrendingPolls';
 
 function App() {
 
@@ -33,12 +35,14 @@ function App() {
         <div className="content">
         <Routes>
           <Route path="/" element={<Home manageLogin={manageLogin}/>}></Route>
+          <Route path="/trending" element={<TrendingPolls />}></Route>
           <Route path="/recent" element={<RecentPolls />}></Route>
           <Route path="/register" element={<Register userInfo={userInfo} />}></Route>
           <Route path="/login" element={<Login userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/myPolls" element={<MyPolls userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/newPoll" element={<NewPoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/poll/:pollId" element={<SinglePoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
+          <Route path="/test" element={<AlertDialog userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
         </Routes>
         </div>
         </div>

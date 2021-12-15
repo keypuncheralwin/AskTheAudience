@@ -16,6 +16,8 @@ function PollDisplay(props){
     const [dataWithPercentage, setDataWithPercentage] = useState(false)
     const [radioValue, setRadioValue] = useState('');
     const [disableRadio, setDisableRadio] = useState(false)
+    const [optionClass, setOptionClass] = useState('option')
+    const [isSelected, setIsSelected] = useState(false)
 
     useEffect(() => {
         
@@ -41,6 +43,7 @@ function PollDisplay(props){
         const currentVotes = options[index].option.votes
         console.log(options[index].option.votes)
         updateVotes(index)
+        setOptionClass('optionSelected')
     }
 
 
@@ -54,7 +57,7 @@ function PollDisplay(props){
     
     
 
-    const [isClicked, setIsClicked] = useState(false)
+    
 
 
     function pollDisplayer(){
@@ -88,7 +91,7 @@ function PollDisplay(props){
                     return (
                         <div key={index+1}><Typography variant="body3">{item.option.name}</Typography>
                         <div className="percentageContainer">
-                        <Box onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
+                        <Box className={optionClass} onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
                         <p>{item.option.percentage}%</p>
                         </div>
                          </div>

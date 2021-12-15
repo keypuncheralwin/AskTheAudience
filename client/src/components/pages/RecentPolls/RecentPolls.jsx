@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 
 const RecentPolls = (props) => {
 
+    const manageDeleteRefresh = props.manageDeleteRefresh
     const { userInfo, manageLogin } = props;
 
     const navigate = useNavigate()
@@ -21,6 +22,8 @@ const RecentPolls = (props) => {
     useEffect(() => {
         axios.get('api/polls/allPolls').then(res => {
           if(res.data.length >= 1){setRetrievedPolls(res.data)}
+          else{setRetrievedPolls(null)}
+
         }).catch(error => {
         
             console.log(error)
@@ -49,7 +52,7 @@ const RecentPolls = (props) => {
       {data.map(item => {
         const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)
           
-          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'} totalVotes={totalVotes}/>)
+          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'recent'} totalVotes={totalVotes}/>)
         
       })}
       </>

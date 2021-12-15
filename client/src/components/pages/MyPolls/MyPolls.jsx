@@ -16,6 +16,8 @@ const MyPolls = (props) => {
     
     const [retrievedPolls, setRetrievedPolls] = useState(null)
 
+    const [refreshOnDelete, setRefreshOnDelete] = useState(false)
+
     let cardClass = ''
     
     useEffect(() => {
@@ -31,8 +33,12 @@ const MyPolls = (props) => {
     
           });
           
-  },[])
+  },[refreshOnDelete])
 
+  function manageDeleteRefresh(){
+    console.log('delete refresh')
+    setRefreshOnDelete(!refreshOnDelete)
+  }
 
     if(retrievedPolls){
       if(retrievedPolls.length === 1){cardClass = 'oneCard'}
@@ -49,7 +55,7 @@ const MyPolls = (props) => {
       {data.map(item => {
         const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)
           
-          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'} totalVotes={totalVotes}/>)
+          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'} totalVotes={totalVotes} manageDeleteRefresh={manageDeleteRefresh}/>)
         
       })}
       </>
@@ -61,7 +67,7 @@ const MyPolls = (props) => {
         <div className={cardClass}> 
         {!retrievedPolls && <RiChatPollFill className="pollIcon" size={60}/>}           
         {retrievedPolls ? dataExtractor(retrievedPolls) : 
-        <Alert severity="info">You haven't created any polls yet, click  <NavLink className={"link"} to="/newPoll">
+        <Alert severity="info">You haven't got any polls, click  <NavLink className={"link"} to="/newPoll">
         <Link>here</Link>
         </NavLink> to create one!</Alert>}
         </div>
