@@ -3,14 +3,12 @@ import React, { useState, useEffect } from 'react';
 import PollDisplay from "../../Poll/PollDisplay";
 import axios from 'axios'
 
-import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import { FaVoteYea } from "react-icons/fa";
 import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
@@ -60,6 +58,10 @@ export default function SinglePoll(props){
 
     }).catch(err => {
         console.log(err)
+        setShowStatus(true)
+        setStatusText(err.response.data.message)
+        setStatusColor('error')
+        setTimeout(function(){ setShowStatus(false) }, 4000); 
     }) 
 
 
@@ -71,9 +73,9 @@ export default function SinglePoll(props){
     return(
 
         
-        <div>
+        <div className="cardPoll">
             <Collapse className="singlePollStatus" in={showStatus} timeout={'auto'} >{showStatus ? <Alert severity={statusColor}>{statusText}</Alert> : ''}</Collapse> 
-            <Card className="cardPoll" sx={{  
+            <Card  sx={{  
                 border: 'var(--cardBorder)',
                 bgcolor: 'var(--cardBackground)',
                 color: 'var(--text)'

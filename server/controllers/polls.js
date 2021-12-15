@@ -49,31 +49,45 @@ router.get('/poll/:id', async (req,res) => {
     }
 })
 
-router.post('/poll/vote', async (req,res) => {
+router.post('/poll/vote',checkAuth, async (req,res) => {
+    const username = req.userData.username
     const pollId = req.body.pollId
-    const optionId = req.body.optionId
+    const optionIndex = req.body.optionId
     console.log(pollId)
-    console.log(optionId)
     const query = {
         "$inc": {}
     }
-    query["$inc"][`options.${optionId}.option.votes`] = 1
-    // "options."+pollId+".option.votes"
-
-
-    try{
-        const updateVote = await Polls.findOneAndUpdate(
-        {
-            "_id": ObjectId(pollId)
-        },
-        query
+    query["$inc"][`options.${optionIndex}.option.votes`] = 1
+    
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
+            if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
+            // if(username === pollCheck[0].username){ return res.status(403).json({message: "You can't vote on your own poll"})}
+            Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
+                res.json('lol')
+            }) 
+            
+        }
         )
-        res.json('lol')
-    }catch(err){
-        console.log(err)
-        res.json({message: err})
-    }
+
+
+    
     
 })
 
 module.exports = router;
+
+// try{
+//     const updateVote = await Polls.findOneAndUpdate(
+//     {
+//         "_id": ObjectId(pollId)
+//     },
+//     query
+//     )
+//     res.json('lol')
+// }catch(err){
+//     console.log(err)
+//     res.json({message: err})
+// }
