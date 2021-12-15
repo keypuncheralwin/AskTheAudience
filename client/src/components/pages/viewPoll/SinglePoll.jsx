@@ -25,6 +25,7 @@ export default function SinglePoll(props){
     const [statusText, setStatusText] = useState('')
     const [statusColor, setStatusColor] = useState('')
 
+
   useEffect(() => {
     if(!state){return navigate("/myPolls")} 
     
@@ -48,10 +49,10 @@ export default function SinglePoll(props){
     const updateData = {pollId: id, optionId: index}
     axios.post(`/api/polls/poll/vote`, updateData).then(res => {
         
-        console.log('trigger')
+        console.log(res)
         setRefreshPoll(!refreshPoll)
         setShowStatus(true)
-        setStatusText("You've Voted ")
+        setStatusText(res.data)
         setStatusColor('success')
         setTimeout(function(){ setShowStatus(false) }, 4000);   
         
@@ -82,7 +83,7 @@ export default function SinglePoll(props){
             }}>
             <CardHeader className='cardHeader'
         avatar={
-          <Avatar sx={{ bgcolor: 'var(--text)' }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: `var(--accent)` }} aria-label="recipe">
             {pollData ? pollData.username.toUpperCase().substring(0,2) : 'Loading Poll'}
           </Avatar>
         }

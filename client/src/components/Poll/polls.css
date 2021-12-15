@@ -1,3 +1,5 @@
+
+
 .card{
     display: grid;
     grid-template-rows: 1fr 2fr 0.4fr;
@@ -21,7 +23,6 @@
 
 }
 
-
 .cardCollection{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -29,20 +30,60 @@
     
 }
 
+.oneCard{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px; 
+}
+
+.twoCards{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.pollIcon{
+    margin-bottom: 20px;
+    color: var(--accent)
+}
+
+.noCards{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .cardPoll{
     min-width: 500px;
+}
+
+.pollBarsContiner{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .pollBars{
     background-color: rgb(143, 143, 143);
     padding: 20px;
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
+
 
 .singlePollStatus{
     margin-bottom: 10px;
 }
 
+.percentageContainer{
+    display: flex;
+    justify-content: space-between;
+}
 
 @media screen and (max-width: 850px) {
 
@@ -59,6 +100,10 @@
 
     .cardPoll{
         min-width: 80vw;
+    }
+
+    .pollBarsContiner{
+        width: 80vw;
     }
 
     

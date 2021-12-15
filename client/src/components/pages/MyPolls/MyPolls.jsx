@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import getLoggedInUser from '../Authentication/checkAuth'
 import axios from 'axios'
 import PollCard from "../../Poll/Card";
+import Alert from '@mui/material/Alert';
+import { NavLink } from "react-router-dom";
+import { RiChatPollFill } from "react-icons/ri";
+import Link from '@mui/material/Link';
 
 const MyPolls = (props) => {
 
@@ -11,10 +15,12 @@ const MyPolls = (props) => {
     const navigate = useNavigate()
     
     const [retrievedPolls, setRetrievedPolls] = useState(null)
+
+    let cardClass = ''
     
     useEffect(() => {
         axios.get('api/polls/myPolls').then(res => {
-            setRetrievedPolls(res.data)
+          if(res.data.length >= 1){setRetrievedPolls(res.data)}
         }).catch(error => {
         
             console.log(error)
@@ -24,14 +30,26 @@ const MyPolls = (props) => {
             navigate("/login", { state: { sessionExpired: true} })
     
           });
+          
   },[])
 
+
+    if(retrievedPolls){
+      if(retrievedPolls.length === 1){cardClass = 'oneCard'}
+      else if(retrievedPolls.length === 2){cardClass = 'twoCards'}
+      else{cardClass = 'cardCollection'}
+    }else{
+      cardClass = 'noCards'
+    }
+
   function dataExtractor(data){
-      console.log(data)
+      
     return (
         <>
       {data.map(item => {
-          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'}/>)
+        const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)
+          
+          return (<PollCard key={item._id} pollId={item._id} title={item.title} description={item.description} username={item.username} date={item.createdAt} status={'current'} totalVotes={totalVotes}/>)
         
       })}
       </>
@@ -40,8 +58,12 @@ const MyPolls = (props) => {
 
     return (
 
-        <div className="cardCollection">            
-        {retrievedPolls && dataExtractor(retrievedPolls)}
+        <div className={cardClass}> 
+        {!retrievedPolls && <RiChatPollFill className="pollIcon" size={60}/>}           
+        {retrievedPolls ? dataExtractor(retrievedPolls) : 
+        <Alert severity="info">You haven't created any polls yet, click  <NavLink className={"link"} to="/newPoll">
+        <Link>here</Link>
+        </NavLink> to create one!</Alert>}
         </div>
     )
 }

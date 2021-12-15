@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
+require('dotenv').config({path: './.env'})
 
+const URI = process.env.MONGO_URI
 
-mongoose.connect('mongodb://localhost/AskTheAudience'), () => {
+mongoose.connect(URI), () => {
     console.log('connected to mongodb database')
 }
 

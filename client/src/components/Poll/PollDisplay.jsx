@@ -82,16 +82,19 @@ function PollDisplay(props){
         }else{
 
             return(
+                
                 dataWithPercentage.map((item,index) => {
                     
                     return (
-                        <div className="optionText" key={index+1}><Typography variant="body3">{item.option.name}</Typography>
-                        <Box onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}>{item.option.percentage}%</Box>
-            
+                        <div key={index+1}><Typography variant="body3">{item.option.name}</Typography>
+                        <div className="percentageContainer">
+                        <Box onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
+                        <p>{item.option.percentage}%</p>
+                        </div>
                          </div>
                     )
                 })
-                )
+            )
         }
 
         
@@ -103,11 +106,11 @@ function PollDisplay(props){
 
     return (
         <div className="pollBars">
-
+            <div className='pollBarsContiner'>
         {
             dataWithPercentage ? pollDisplayer() : 'loading polls'
         }               
-      
+        </div>
        
             
         </div>

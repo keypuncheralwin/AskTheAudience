@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdHowToVote } from "react-icons/md";
 import { BsFillArrowRightCircleFill } from "react-icons/bs";
-
+import randomColor from "./profileColor"
 
 export default function PollCard(props) {
 
@@ -20,7 +20,7 @@ export default function PollCard(props) {
   const  date = props.date.substring(0,10)
   const title = props.title.substring(0, 100) + '...';
   const description = props.description.substring(0, 350) + '...'
-
+  const totalVotes = props.totalVotes
   
 
   return (
@@ -31,7 +31,7 @@ export default function PollCard(props) {
      }}>
       <CardHeader className='cardHeader'
         avatar={
-          <Avatar sx={{ bgcolor: 'var(--text)' }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: `${randomColor()}` }} aria-label="recipe">
             {usernameLogo}
           </Avatar>
         }
@@ -55,7 +55,7 @@ export default function PollCard(props) {
       <div className='cardButtons'>
         <IconButton className='cardButtons' aria-label="add to favorites" sx={{ color: 'var(--text)' }}>
           <MdHowToVote />
-        <Typography variant="body2" sx={{paddingTop:'8px', margin:0, color: 'var(--text)' }} gutterBottom>10</Typography>
+        <Typography variant="body2" sx={{paddingTop:'8px', margin:0, color: 'var(--text)' }} gutterBottom>{totalVotes}</Typography>
         </IconButton>
         <NavLink to={`/poll/${pollId}`} state={{ id: pollId }}>
         <IconButton className='cardButtons' aria-label="share" sx={{ color: 'var(--text)' }}>

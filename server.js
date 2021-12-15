@@ -4,6 +4,7 @@ const app = express();
 const PORT = 3001;
 
 app.use(cookieParser())
+app.use(express.static("./client/build"));
 
 const pollsController = require("./controllers/polls");
 const testController = require("./controllers/test")

@@ -47,9 +47,9 @@ const Navbar = (props) => {
              
             { !userInfo ? <NavLink to="/register" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleClick} className='nav-item'>Register</li></NavLink> : null}
             { !userInfo ? <NavLink to="/login" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleClick} className='nav-item'>Login</li></NavLink> : null}
-            { userInfo ? <NavLink to="/myPolls" ><li onClick={handleClick} className='nav-item'>My Polls</li></NavLink> : null }
-            { userInfo ? <NavLink to="/newPoll" ><li onClick={handleClick} className='nav-item'>Create a Poll</li></NavLink> : null }
-            { userInfo ? <NavLink to="/login" ><li onClick={handleLogOut} className='nav-item'>Logout</li></NavLink> : null }
+            { userInfo ? <NavLink to="/myPolls" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleClick} className='nav-item'>My Polls</li></NavLink> : null }
+            { userInfo ? <NavLink to="/newPoll" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleClick} className='nav-item'>Create a Poll</li></NavLink> : null }
+            { userInfo ? <NavLink to="/login" className={({ isActive }) => (isActive ? 'selected' : '')}><li onClick={handleLogOut} className='nav-item'>Logout</li></NavLink> : null }
             <li onClick={handleDark} className='nav-item themeIcon'>{isDark ? <MdDarkMode size={21}/> : <MdOutlineDarkMode size={21}/>}</li>
         </ul>
             <div className='hamburger' onClick={handleClick}>
