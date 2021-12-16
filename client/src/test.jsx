@@ -1,48 +1,47 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { RiDeleteBin5Fill } from "react-icons/ri";
+import { RiQuestionnaireFill } from "react-icons/ri";
+import Typography from '@mui/material/Typography';
+import { MdPoll } from "react-icons/md";
+import { FaTheaterMasks, FaVoteYea } from 'react-icons/fa'
+import { useNavigate } from "react-router-dom";
 
 export default function AlertDialog() {
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const navigate = useNavigate()
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  function handleClick(){
+    navigate("/trending")
+  }
 
   return (
-    <div>
-        <RiDeleteBin5Fill onClick={handleClickOpen}/>
-      
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure you want to delete this poll?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose} autoFocus>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+    <div className="home">
+      <div>
+      <div className="block1">
+      <RiQuestionnaireFill size={150} />
+        <Typography variant="h3" component="div" gutterBottom>
+        You've got questions? We've got all the answers! All of them!
+      </Typography>
+      </div>
+      <div className="block1">
+      <Typography variant="h4" component="div" gutterBottom>
+        Let the internet know about your problems and let them vote on it to help you reach a solution!
+      </Typography>
+      <MdPoll className="blockIcon" size={150} />
+      </div>
+      <div className="block1">
+      <FaTheaterMasks  className="blockIcon2" size={150} />
+      <Typography variant="h4" component="div" gutterBottom>
+        Here at Ask The Audience, we allow you to create polls to get immediate feedback from our wide userbase!
+        You can also vote on other users polls becuase who dosen't love helping out a stranger on the internet!
+      </Typography>
+      </div>
+      </div>
+      <div className="block2">
+        <Typography variant="h3" component="div" gutterBottom>
+        What are you waiting for? Check out the trending polls Now!.
+      </Typography>
+      <FaVoteYea className="redirectIcon" onClick={handleClick} size={150} />
+      </div>
+  
     </div>
   );
 }

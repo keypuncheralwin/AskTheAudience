@@ -50,9 +50,46 @@ body {
 .content{
   padding-top: 60px;
   padding-bottom: 60px;
-  /* width: 940px;
-  display: grid;
-  place-items: center; */
+  
+}
+
+.home{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.block1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.block2{
+  margin-top: 30px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blockIcon{
+width: 25%;
+}
+
+.blockIcon2{
+  width: 50%;
+  padding: 10px;
+}
+
+.redirectIcon{
+  cursor: pointer;
+}
+
+.redirectIcon:hover{
+  color: var(--accent);
 }
 
 @media screen and (max-width: 940px) {
@@ -61,4 +98,8 @@ body {
     padding-top: 10px;
     width: 100%;
   }
+  .block1{
+    flex-direction: column;
+  }
 }
+
