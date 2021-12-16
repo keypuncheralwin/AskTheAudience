@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import getLoggedInUser from '../Authentication/checkAuth'
 import axios from 'axios'
 import PollCard from "../../Poll/Card";
-import Alert from '@mui/material/Alert';
-import { NavLink } from "react-router-dom";
-import { RiChatPollFill } from "react-icons/ri";
-import Link from '@mui/material/Link';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const RecentPolls = (props) => {
 
@@ -62,11 +59,8 @@ const RecentPolls = (props) => {
     return (
 
         <div className={cardClass}> 
-        {!retrievedPolls && <RiChatPollFill className="pollIcon" size={60}/>}           
-        {retrievedPolls ? dataExtractor(retrievedPolls) : 
-        <Alert severity="info">You haven't created any polls yet, click  <NavLink className={"link"} to="/newPoll">
-        <Link>here</Link>
-        </NavLink> to create one!</Alert>}
+        {!retrievedPolls && <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}           
+        {retrievedPolls ? dataExtractor(retrievedPolls) : "Loading Polls"}
         </div>
     )
 }
