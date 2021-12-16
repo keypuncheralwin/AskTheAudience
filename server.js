@@ -1,7 +1,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser')
 const app = express();
-const PORT = 3001;
+const path = require('path')
+require('dotenv').config({path: './.env'})
+
+const PORT = process.env.PORT || 3001;
+
 
 app.use(cookieParser())
 app.use(express.static("./client/build"));
