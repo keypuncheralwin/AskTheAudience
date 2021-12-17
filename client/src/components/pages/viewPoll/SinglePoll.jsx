@@ -12,6 +12,7 @@ import Alert from '@mui/material/Alert';
 import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
+import Comments from "../../Comments/Comments";
 
 
 export default function SinglePoll(props){
@@ -25,11 +26,15 @@ export default function SinglePoll(props){
     const [statusText, setStatusText] = useState('')
     const [statusColor, setStatusColor] = useState('')
 
+    const { id } = state;
+    const pollId = id
+    
 
   useEffect(() => {
     if(!state){return navigate("/myPolls")} 
     
     const { id } = state;
+
     axios.get(`/api/polls/poll/${id}`).then(res => {
         setPollData(res.data)
         
@@ -39,6 +44,10 @@ export default function SinglePoll(props){
 
 
   },[refreshPoll]);
+
+  function refreshComments(){
+    setRefreshPoll(!refreshPoll)
+  }
 
 
   function updateVotes(index){
@@ -123,10 +132,14 @@ export default function SinglePoll(props){
         <Typography variant="body3">
         {pollData ? pollData.description : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" /> }
         </Typography>
-        {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes } refreshPoll={refreshPoll}/> : "Loading Poll Data"}
+        {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes } /> : "Loading Poll Data"}
       </CardContent>
     </Card>
-            
+    <div className="commentWrapper">
+      {console.log(pollId)}
+    {pollData ? <Comments  comments={pollData.comments} refreshComments={refreshComments} pollId={pollId} /> : "Loading comments"}
+    </div>
         </div>
     )
 }
+

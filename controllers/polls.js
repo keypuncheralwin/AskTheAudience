@@ -90,7 +90,7 @@ router.delete('/poll/:id',checkAuth, (req,res) => {
 
 router.post('/poll/vote',checkAuth, async (req,res) => {
     const username = req.userData.username
-    
+    console.log(username, '.........................')
     const pollId = req.body.pollId
     const optionIndex = req.body.optionId
     
@@ -110,6 +110,7 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
             if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
             
             const hasVoted = pollCheck[0]['whoVoted'].filter(item => {return item[`${username}`]})
+            console.log(hasVoted,'......................')
             
             if(hasVoted.length > 0){ 
                 
@@ -120,6 +121,7 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
                 return res.status(404).json( {message: `You've already voted on this poll`} )}
 
             if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
+
             Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
                 res.json({message:"You've successfully voted"})
             }).catch(err => {console.log(err)}) 
@@ -149,6 +151,49 @@ router.get('/:username', async (req,res) => {
         console.log(err)
         res.json({message: err})
     }
+})
+
+router.post('/comment',checkAuth, async (req,res) => {
+    const username = req.userData.username
+    
+    const pollId = req.body.pollId
+    const comment = req.body.comment
+
+    const getDate = new Date();
+    const currentDate = getDate.toLocaleString()
+
+    const addComment= {
+        user : {'name': '', 'comment': '', 'date': ''}
+    }
+    addComment.user['name']= username
+    addComment.user['comment'] = comment
+    addComment.user['date'] = currentDate
+
+    const query = {
+        "$push": {}
+    }
+    query["$push"][`comments`] = addComment
+    
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1 || pollCheck.length === 0){ return res.status(404).json({message: "Invalid Poll"})}
+            
+            Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
+                res.json({message:"You've successfully commented"})
+            }).catch(err => {console.log(err)}) 
+
+            
+            
+                
+        }).catch(err => {
+            console.log(err)
+            res.json({message: err})
+        })
+
+
+    
+    
 })
 
 module.exports = router;

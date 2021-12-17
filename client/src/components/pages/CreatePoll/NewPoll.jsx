@@ -77,8 +77,7 @@ export default function NewPoll(props){
             "title": "",
             "description":"",
             "options": [],
-            "whoVoted":[{"username":"option id"},{"username":"option id"}],
-            "comments":[{"sampleUser": {comment: 'sample comment', date:currentDate}}]
+            "whoVoted":[{"username":"option id"},{"username":"option id"}]
         }
 
         
@@ -92,7 +91,7 @@ export default function NewPoll(props){
         }
         console.log(formData)
 
-        axios.post('/api/polls/new', formData)
+      axios.post('/api/polls/new', formData)
       .then( res => { 
         setLoading(1)
         console.log('poll created',res)
@@ -128,7 +127,7 @@ export default function NewPoll(props){
         <h2 className='newPollHeader'>Create a new poll</h2> 
         <Collapse in={animateError} timeout={'auto'}>{errorMessage ? <Alert severity="warning">{errorMessage}</Alert> : ''}</Collapse> 
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-        {/* <form onSubmit={handleSubmit}> */}
+        
         <div className="newPoll">
         <TextField className={classes.root} required margin="dense" name="title" id="title" label="Title" variant="outlined" /> 
         <TextField className={classes.root}  required margin="dense" name="decription" id="decription" label="Brief Desription" multiline rows={4} variant="outlined" />
@@ -146,7 +145,7 @@ export default function NewPoll(props){
         </div>
         </div>
         </Box>
-        {/* </form> */}
+        
         </div>
     )
 

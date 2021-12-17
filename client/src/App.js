@@ -36,8 +36,8 @@ function App() {
         <div className="content">
         <Routes>
           <Route path="/" element={<Home manageLogin={manageLogin}/>}></Route>
-          <Route path="/trending" element={<TrendingPolls />}></Route>
-          <Route path="/recent" element={<RecentPolls />}></Route>
+          <Route path="/trending" element={<TrendingPolls manageLogin={manageLogin}/>}></Route>
+          <Route path="/recent" element={<RecentPolls manageLogin={manageLogin}/>}></Route>
           <Route path="/register" element={<Register userInfo={userInfo} />}></Route>
           <Route path="/login" element={<Login userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/myPolls" element={<MyPolls userInfo={userInfo} manageLogin={manageLogin}/>}></Route>

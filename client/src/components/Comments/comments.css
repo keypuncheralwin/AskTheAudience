@@ -1,0 +1,16 @@
+
+.commentContainer{
+    
+    display: flex;
+    flex-direction: column;
+    border-bottom: 2px solid rgb(143, 143, 143);
+    margin-bottom: 10px;
+}
+
+.commentButton{
+    width: 115px;
+}
+
+.commentCard{
+    padding-bottom: 10px;
+}
