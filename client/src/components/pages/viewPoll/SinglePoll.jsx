@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import PollDisplay from "../../Poll/PollDisplay";
 import axios from 'axios'
@@ -95,9 +95,11 @@ export default function SinglePoll(props){
             }}>
             <CardHeader className='cardHeader'
         avatar={
+          <NavLink to={`/polls/${pollData.username}`} state={{ username: pollData.username }}>
           <Avatar sx={{ bgcolor: `var(--accent)` }} aria-label="user logo">
             {pollData ? pollData.username.toUpperCase().substring(0,2) : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}
           </Avatar>
+          </NavLink>
         }
         
         action={
@@ -105,7 +107,11 @@ export default function SinglePoll(props){
             
           </IconButton>
         }
-        title={pollData ? pollData.username : "Loading Poll Data"}
+        title={
+          <NavLink to={`/polls/${pollData.username}`} state={{ username: pollData.username }}>
+          {pollData ? pollData.username : "Loading Poll Data"}
+          </NavLink>
+        }
         
         subheader={<Typography sx={{ color: 'var(--text)' }}>{pollData ? pollData.createdAt.substring(0,10) : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}</Typography>}
       />
@@ -117,7 +123,7 @@ export default function SinglePoll(props){
         <Typography variant="body3">
         {pollData ? pollData.description : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" /> }
         </Typography>
-        {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes } refreshPoll={refreshPoll}/> : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}
+        {pollData ? <PollDisplay options={pollData.options} updateVotes={ updateVotes } refreshPoll={refreshPoll}/> : "Loading Poll Data"}
       </CardContent>
     </Card>
             

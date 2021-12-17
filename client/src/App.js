@@ -13,6 +13,7 @@ import getLoggedInUser from "./components/pages/Authentication/checkAuth"
 import SinglePoll from './components/pages/viewPoll/SinglePoll';
 import AlertDialog from './test'
 import TrendingPolls from './components/pages/TrendingPolls/TrendingPolls';
+import PollsByUser from './components/pages/viewUser/PollsByUser';
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="/myPolls" element={<MyPolls userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/newPoll" element={<NewPoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/poll/:pollId" element={<SinglePoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
+          <Route path="/polls/:username" element={<PollsByUser userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/test" element={<AlertDialog userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
         </Routes>
         </div>

@@ -137,5 +137,19 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
     
 })
 
+router.get('/:username', async (req,res) => {
+    
+    const username = req.params.username
+    
+    try{
+        const polls = await Polls.find({"username":username}).sort( [['_id', -1]] )
+        
+        res.json(polls)
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
+
 module.exports = router;
 
