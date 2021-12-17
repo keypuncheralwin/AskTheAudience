@@ -17,12 +17,10 @@ function PollDisplay(props){
     const [radioValue, setRadioValue] = useState('');
     const [disableRadio, setDisableRadio] = useState(false)
     const [optionClass, setOptionClass] = useState('option')
-    const [isSelected, setIsSelected] = useState(false)
 
     useEffect(() => {
         
-        console.log('testing________')
-        
+            
         const total = options.map(item => {return item.option.votes}).reduce((a, b) => a + b, 0)
 
         if(total > 0){
@@ -40,10 +38,11 @@ function PollDisplay(props){
 
        
     function handleClick(event,index,optionName){
-        const currentVotes = options[index].option.votes
+        
         console.log(options[index].option.votes)
         updateVotes(index)
         setOptionClass('optionSelected')
+        
     }
 
 
@@ -73,7 +72,7 @@ function PollDisplay(props){
                 
                 return (
                     <div className="optionText" key={index+1} >
-                    <FormControlLabel  disabled={disableRadio} value={index} control={<Radio  sx={{ color: `var(--text)`,'&.Mui-checked': { color: `var(--text)` }}} />} label={item.option.name[0]} />
+                    <FormControlLabel disabled={disableRadio} value={index} control={<Radio  sx={{ color: `var(--text)`,'&.Mui-checked': { color: `var(--text)` }}} />} label={item.option.name[0]} />
                     </div>
                 )
             })}
@@ -90,7 +89,7 @@ function PollDisplay(props){
                     
                     return (
                         <div className={"barText"} onClick={(event) => { handleClick(event,index,item.option.name) }} key={index+1}><Typography variant="body3">{item.option.name}</Typography>
-                        <div className="percentageContainer">
+                        <div className="percentageContainer" >
                         <Box className={optionClass} onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
                         <p>{item.option.percentage}%</p>
                         </div>

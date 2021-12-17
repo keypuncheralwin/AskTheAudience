@@ -1,102 +1,196 @@
-//sorting comments by time
+const express = require('express')
+const router = express();
+const Polls = require('../models/polls');
+const checkAuth = require('../middleware/auth')
+const Mongoose = require('mongoose')
+const ObjectId = Mongoose.Types.ObjectId
 
-const arr = [{id: 1, date: 'Sun Dec 12 2021 00:44:54 GMT+1030 (Australian Central Daylight Time)'}, {id: 2, date: 'Sun Dec 12 2021 00:47:41 GMT+1030 (Australian Central Daylight Time)'}];
-        const sortByDate = arr => {
-        const sorter = (a, b) => {
-            return new Date(a.date).getTime() - new Date(b.date).getTime();
-        }
-        arr.sort(sorter);
-        };
-        sortByDate(arr);
-        console.log((arr).reverse());
+router.use(express.json());
 
-
-
-
-
-    //     <div>
-    //   {data.map(item => {
-    //       return (
-    //       <div>
-    //         <p>created on: {item.createdAt}</p>
-    //         <p>username: {item.username}</p>
-    //         <p>title: {item.title}</p>
-    //         <p>description: {item.description}</p>
-    //         {item.options.map(item => {
-    //             return <div><p>option: {item.option.name[0]}</p> <p>numbers of votes: {item.option.votes} </p></div>
-    //         })}
-    //         </div>
-    //       )
+router.get('/allPolls', async (req,res) => {
+    
+    try{
+        const myPolls = await Polls.find().sort( [['_id', -1]] )
         
-    //   })}
-    //   </div>
+        res.json(myPolls)
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
 
 
-    // {
-    //     "_id": "61b7342e3dcde035fcbacef9",
-    //     "username": "johnboy",
-    //     "title": "This is me testing the vote system",
-    //     "description": "Hello, this is a sample description",
-    //     "options": [
-    //         {
-    //             "option": {
-    //                 "name": [
-    //                     "sample text for option1"
-    //                 ],
-    //                 "votes": 25
-    //             }
-    //         },
-    //         {
-    //             "option": {
-    //                 "name": [
-    //                     "sample text for option2"
-    //                 ],
-    //                 "votes": 31
-    //             }
-    //         }
-    //     ],
-    //     "whoVoted": [
-    //         {
-    //             "username": "option index will go here"
-    //         },
-    //         {
-    //             "username": "option index will go here"
-    //         }
-    //     ],
-    //     "comments": [
-    //         {
-    //             "sampleUser": {
-    //                 "comment": "sample comment",
-    //                 "date": "Mon Dec 13 2021 22:23:18 GMT+1030 (Australian Central Daylight Time)"
-    //             }
-    //         }
-    //     ],
-    //     "createdAt": "2021-12-13T11:53:18.816Z",
-    //     "updatedAt": "2021-12-14T00:07:49.783Z",
-    //     "__v": 0
-    // }
+router.post('/new',checkAuth, (req,res) => {
+    const poll = new Polls({
+        username: req.userData.username,
+        title: req.body.title,
+        description: req.body.description,
+        options: req.body.options,
+        whoVoted: req.body.whoVoted,
+        comments: req.body.comments
+    })
+    poll.save()
+    .then(result => res.sendStatus(201))
+    .catch( err => {
+        console.log(err);
+        res.status(500).json({error: err})
+    })
+})
 
-    router.post('/poll/vote', async (req,res) => {
-        const pollId = req.body.pollId
-        const optionId = req.body.optionId
-        console.log(pollId)
-        console.log(optionId)
-        const query = "options."+optionId+".option.votes"
-        try{
-            const updateVote = await Polls.findOneAndUpdate(
-            {
-                "_id": ObjectId(pollId)
-            },
-            {
-                "$inc": {
-                    "options.1.option.votes":1
-                }
-            }
-            )
-            console.log('it worked?')
-        }catch(err){
+router.get('/myPolls',checkAuth, async (req,res) => {
+    const username = req.userData.username
+    try{
+        const myPolls = await Polls.find({"username":username}).sort( [['_id', -1]] )
+        
+        res.json(myPolls)
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
+
+router.get('/poll/:id', async (req,res) => {
+    const pollId = req.params.id
+    try{
+        const pollById = await Polls.find({"_id": ObjectId(pollId)})
+        res.json(pollById[0])
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
+
+router.delete('/poll/:id',checkAuth, (req,res) => {
+    const pollId = req.params.id
+    const username = req.userData.username
+    console.log(username)
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
+                        
+            if(username === pollCheck[0].username){ 
+
+                Polls.find({"_id": ObjectId(pollId)}).deleteOne().exec().then(result =>{ res.json({message: "The poll has been deleted"}) }).catch(err => {
+                    console.log(err)
+                    res.json({message: err})
+                })
+
+            }else{
+                return res.status(401).json({message: "You're not authorised to delete this poll"})
+            } 
+
+            
+                
+        }).catch(err => {
             console.log(err)
             res.json({message: err})
-        }
+        })
+})
+
+router.post('/poll/vote',checkAuth, async (req,res) => {
+    const username = req.userData.username
+    console.log(username, '.........................')
+    const pollId = req.body.pollId
+    const optionIndex = req.body.optionId
+    
+    const whoVoted = {}
+    whoVoted[`${username}`] = optionIndex
+    const query = {
+        "$inc": {},
+        "$push": {}
+    }
+    query["$inc"][`options.${optionIndex}.option.votes`] = 1
+    query["$push"][`whoVoted`] = whoVoted 
+    
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
+            if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
+            if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
+            
+            const hasVoted = pollCheck[0]['whoVoted'].map(item => console.log(item))
+            if(hasVoted[0] === undefined){console.log('yes')}
+            // console.log(pollCheck[0]['whoVoted'].map(item => {return item[`${username}`]}))
+   
+            // console.log(hasVoted)
+            // if(hasVoted[0] !== undefined){ return res.status(404).json( {message: `You've already voted on this poll`} )}
+
+            
+            // Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
+            //     res.json({message:"You've successfully voted"})
+            // }).catch(err => {console.log(err)}) 
+
+            
+            
+                
+        }).catch(err => {
+            console.log(err)
+            res.json({message: err})
+        })
+
+
+    
+    
+})
+
+router.get('/:username', async (req,res) => {
+    
+    const username = req.params.username
+    
+    try{
+        const polls = await Polls.find({"username":username}).sort( [['_id', -1]] )
         
-    })
+        res.json(polls)
+    }catch(err){
+        console.log(err)
+        res.json({message: err})
+    }
+})
+
+router.post('/comment',checkAuth, async (req,res) => {
+    const username = req.userData.username
+    
+    const pollId = req.body.pollId
+    const comment = req.body.comment
+
+    const getDate = new Date();
+    const currentDate = getDate.toLocaleString()
+
+    const addComment= {
+        user : {'name': '', 'comment': '', 'date': ''}
+    }
+    addComment.user['name']= username
+    addComment.user['comment'] = comment
+    addComment.user['date'] = currentDate
+
+    const query = {
+        "$push": {}
+    }
+    query["$push"][`comments`] = addComment
+    
+    Polls.find({"_id": ObjectId(pollId)})
+        .exec()
+        .then( pollCheck => {
+            if(pollCheck.length > 1 || pollCheck.length === 0){ return res.status(404).json({message: "Invalid Poll"})}
+            
+            Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
+                res.json({message:"You've successfully commented"})
+            }).catch(err => {console.log(err)}) 
+
+            
+            
+                
+        }).catch(err => {
+            console.log(err)
+            res.json({message: err})
+        })
+
+
+    
+    
+})
+
+module.exports = router;
+

@@ -24,7 +24,7 @@ export default function SinglePoll(props){
 
     const [showStatus, setShowStatus] = useState(false)
     const [statusText, setStatusText] = useState('')
-    const [statusColor, setStatusColor] = useState('')
+    const [statusColor, setStatusColor] = useState()
 
     const { id } = state;
     const pollId = id
@@ -53,9 +53,8 @@ export default function SinglePoll(props){
   function updateVotes(index){
 
     const { id } = state;
-    console.log(id)
-    console.log(index)
-    console.log(pollData.options[index].option.votes)
+    
+    
     const updateData = {pollId: id, optionId: index}
     axios.post(`/api/polls/poll/vote`, updateData).then(res => {
         
@@ -72,14 +71,14 @@ export default function SinglePoll(props){
         
         if(err.response.data === 'Forbidden'){
           setShowStatus(true)
-          setStatusText('You need to login to vote')
-          setStatusColor('error')
+          setStatusText('Please login to vote')
+          setStatusColor("error")
           setTimeout(function(){ setShowStatus(false) }, 4000); 
 
         }else{
           setShowStatus(true)
           setStatusText(err.response.data.message)
-          setStatusColor('error')
+          setStatusColor("error")
           setTimeout(function(){ setShowStatus(false) }, 4000); 
         }
               
@@ -136,7 +135,7 @@ export default function SinglePoll(props){
       </CardContent>
     </Card>
     <div className="commentWrapper">
-      {console.log(pollId)}
+      
     {pollData ? <Comments  comments={pollData.comments} refreshComments={refreshComments} pollId={pollId} /> : "Loading comments"}
     </div>
         </div>

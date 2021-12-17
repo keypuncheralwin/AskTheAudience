@@ -94,8 +94,12 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
     const pollId = req.body.pollId
     const optionIndex = req.body.optionId
     
-    const whoVoted = {}
-    whoVoted[`${username}`] = optionIndex
+    const whoVoted= {
+        user : {'name': '', 'optionIndex': ''}
+    }
+    whoVoted.user['name']= username
+    whoVoted.user['optionIndex'] = optionIndex
+
     const query = {
         "$inc": {},
         "$push": {}
@@ -108,20 +112,21 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
         .then( pollCheck => {
             if(pollCheck.length > 1){ return res.status(404).json({message: "Invalid Poll"})}
             if(optionIndex > pollCheck[0].options.length){ return res.status(404).json({message: "Invalid Poll Option"})}
-            
-            const hasVoted = pollCheck[0]['whoVoted'].filter(item => {return item[`${username}`]})
-            console.log(hasVoted,'......................')
-            
-            if(hasVoted.length > 0){ 
-                
-                console.log("we're in")
-                const index = hasVoted[0][`${username}`]
-                const votedOption = pollCheck[0].options[index].option.name
-                console.log(votedOption)
-                return res.status(404).json( {message: `You've already voted on this poll`} )}
-
             if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
+            
+            const hasVoted = pollCheck[0]['whoVoted'].map(item => {if(item.user.name === username){return item.user.name}})
+            console.log(hasVoted)
+            // console.log(pollCheck[0]['whoVoted'].map(item => {return item[`${username}`]}))
+            const userWhoVoted = []
+            for (vote of hasVoted){
+                if(vote === username){
+                    userWhoVoted.push(vote)
+                }
+            }
+            
+            if(userWhoVoted.length > 0 ){ return res.status(404).json( {message: `You've already voted on this poll`} )}
 
+            
             Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {
                 res.json({message:"You've successfully voted"})
             }).catch(err => {console.log(err)}) 

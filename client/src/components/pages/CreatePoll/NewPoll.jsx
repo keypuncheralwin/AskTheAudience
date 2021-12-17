@@ -76,8 +76,7 @@ export default function NewPoll(props){
             "username": "",
             "title": "",
             "description":"",
-            "options": [],
-            "whoVoted":[{"username":"option id"},{"username":"option id"}]
+            "options": []
         }
 
         

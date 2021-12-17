@@ -40,9 +40,6 @@ const TrendingPolls = (props) => {
     }
 
   function dataExtractor(data){
-
-    const thing = data.filter(item => item.username === 'john')
-    console.log(thing)
     
     const dataWithTotalVotes = data.map( item => {
       const totalVotes = item.options.map(object => {return object.option.votes}).reduce((a, b) => a + b, 0)

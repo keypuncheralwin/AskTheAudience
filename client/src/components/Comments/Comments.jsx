@@ -57,7 +57,12 @@ export default function Comments(props) {
       })
       .catch(error => {
         
-        console.log(error)
+        if(error.response.status === 403){
+            setShowStatus(true)
+            setStatusText("Please login to comment")
+            setStatusColor('error')
+            return setTimeout(function(){ setShowStatus(false) }, 4000);
+        }
         
         setShowStatus(true)
         setStatusText("failed to add comment")
@@ -83,9 +88,7 @@ export default function Comments(props) {
 
         return (
             latestComments.map(item => {
-                const date = item.user.date
-                const dateArray = item.user.date.split(',')
-                console.log(dateArray[0].split(',')[0].split(''))
+                
                 return (
                     <div className="commentCard">
                     <Card sx={{
@@ -125,8 +128,8 @@ export default function Comments(props) {
     <div>
     <Collapse className="singlePollStatus" in={showStatus} timeout={'auto'} >{showStatus ? <Alert severity={statusColor}>{statusText}</Alert> : ''}</Collapse> 
       <Accordion  expanded={isexpanded} sx={{ mt: 1, color: 'var(--text)', backgroundColor: 'var(--cardBackground)' }}>
-        <AccordionSummary onClick={handleClick}
-          expandIcon={<MdExpandMore sx={{ color: 'var(--text)'}} onClick={handleClick} />}
+        <AccordionSummary  onClick={handleClick}
+          expandIcon={<MdExpandMore color='var(--text)' onClick={handleClick} />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
@@ -137,7 +140,9 @@ export default function Comments(props) {
         <Box  component="form" onSubmit={handleSubmit}  sx={{ mt: 1}}>
         <div className='commentContainer'>
         <TextField className={classes.root} required margin="dense" name="comment" id="comment" label="New Comment" multiline rows={3} variant="outlined" />
-        <Button className={classes.root} className='commentButton' sx={{ borderColor: 'var(--accent)', color: 'var(--text)', '&:hover': { color: 'var(--accent)', borderColor: 'var(--accent)',},}} size="small" type="submit">Add Comment</Button>
+        <div className='commentButton'>
+        <Button className={classes.root} sx={{ borderColor: 'var(--accent)', color: 'var(--text)', '&:hover': { color: 'var(--accent)', borderColor: 'var(--accent)',},}} size="small" type="submit">Add Comment</Button>
+        </div>
         </div>
         </Box>
         

@@ -2,7 +2,7 @@
 
 .card{
     display: grid;
-    grid-template-rows: 1fr 2fr 0.4fr;
+    grid-template-rows: 0.2fr 2fr 0.4fr;
 }
 
 .cardHeader{
@@ -106,6 +106,10 @@
     transition: width 500ms;
     cursor: default;
 
+}
+
+.selectedBar{
+    background-color: var(--accent);
 }
 
 .voteButton:hover{
