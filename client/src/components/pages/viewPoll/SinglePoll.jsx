@@ -105,14 +105,14 @@ export default function SinglePoll(props){
             
           </IconButton>
         }
-        title={pollData ? pollData.username : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}
+        title={pollData ? pollData.username : "Loading Poll Data"}
         
         subheader={<Typography sx={{ color: 'var(--text)' }}>{pollData ? pollData.createdAt.substring(0,10) : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}</Typography>}
       />
       <CardContent>
         
         <Typography variant="h5" sx={{ mb: 1.5 }} color={'var(--text)'}>
-        {pollData ? pollData.title : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" /> }
+        {pollData ? pollData.title : "Loading Poll Data" }
         </Typography>
         <Typography variant="body3">
         {pollData ? pollData.description : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" /> }
