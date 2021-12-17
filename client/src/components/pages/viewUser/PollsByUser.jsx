@@ -33,7 +33,7 @@ const PollsByUser = (props) => {
             
           console.log(error.message)
           manageLogin(getLoggedInUser)
-          // navigate("/login", { state: { sessionExpired: true} })
+          navigate("/login", { state: { sessionExpired: true} })
     
         });
           

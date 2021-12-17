@@ -33,16 +33,22 @@ export default function PollCard(props) {
      }}>
       <CardHeader className='cardHeader'
         avatar={
+          <NavLink to={`/polls/${username}`} state={{ username: username }}>
           <Avatar sx={{ bgcolor: `${cardStatus === 'current' ? 'var(--accent)' : randomColor()}` }} aria-label="recipe">
             {usernameLogo}
           </Avatar>
+          </NavLink>
         }
         action={
           <IconButton aria-label="settings" sx={{ color: 'var(--text)' }}>
             {cardStatus === 'current' && <DeletePoll title={title} pollId={pollId} manageDeleteRefresh={manageDeleteRefresh}/> }
           </IconButton>
         }
-        title={username }
+        title={
+          <NavLink className={'pollUsername'} to={`/polls/${username}`} state={{ username: username }}>
+          {username} 
+          </NavLink>
+        }
         
         subheader={<Typography sx={{ color: 'var(--text)' }}>{date }</Typography>}
       />

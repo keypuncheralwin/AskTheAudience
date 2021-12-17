@@ -96,7 +96,7 @@ export default function NewPoll(props){
       .then( res => { 
         setLoading(1)
         console.log('poll created',res)
-        navigate("/")        
+        navigate("/myPolls")        
       })
       .catch(error => {
         

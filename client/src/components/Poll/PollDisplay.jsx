@@ -89,7 +89,7 @@ function PollDisplay(props){
                 dataWithPercentage.map((item,index) => {
                     
                     return (
-                        <div key={index+1}><Typography variant="body3">{item.option.name}</Typography>
+                        <div className={"barText"} onClick={(event) => { handleClick(event,index,item.option.name) }} key={index+1}><Typography variant="body3">{item.option.name}</Typography>
                         <div className="percentageContainer">
                         <Box className={optionClass} onClick={(event) => { handleClick(event,index,item.option.name) }}  key={index}  sx={{width: `${item.option.percentage}%`, bgcolor:'grey.300', color:'black', p: 1, my: 0.5 }}></Box>
                         <p>{item.option.percentage}%</p>

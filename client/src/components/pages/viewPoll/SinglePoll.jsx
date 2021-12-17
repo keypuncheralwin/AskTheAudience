@@ -94,7 +94,7 @@ export default function SinglePoll(props){
                 color: 'var(--text)'
             }}>
             <CardHeader className='cardHeader'
-        avatar={
+        avatar={ 
           <NavLink to={`/polls/${pollData.username}`} state={{ username: pollData.username }}>
           <Avatar sx={{ bgcolor: `var(--accent)` }} aria-label="user logo">
             {pollData ? pollData.username.toUpperCase().substring(0,2) : <CircularProgress sx={{ color: 'var(--accent)' }}  className="pollIcon" />}
@@ -108,7 +108,7 @@ export default function SinglePoll(props){
           </IconButton>
         }
         title={
-          <NavLink to={`/polls/${pollData.username}`} state={{ username: pollData.username }}>
+          <NavLink className={'pollUsername'} to={`/polls/${pollData.username}`} state={{ username: pollData.username }}>
           {pollData ? pollData.username : "Loading Poll Data"}
           </NavLink>
         }
