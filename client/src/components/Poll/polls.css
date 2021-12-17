@@ -26,6 +26,7 @@
 .cardCollection{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    padding: 50px;
     grid-gap: 10px;
     
 }
@@ -99,12 +100,16 @@
 
 }
 
+.voteButton:hover{
+    color: var(--accent);
+}
+
 @media screen and (max-width: 850px) {
 
     .cardCollection{
         display: grid;
         grid-template-columns: 1fr;
-        grid-gap: 10px;
+        
     }
 
     .pollDisplay{

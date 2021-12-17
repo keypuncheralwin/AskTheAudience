@@ -117,7 +117,7 @@ router.post('/poll/vote',checkAuth, async (req,res) => {
                 const index = hasVoted[0][`${username}`]
                 const votedOption = pollCheck[0].options[index].option.name
                 console.log(votedOption)
-                return res.status(404).json( {message: `You've already voted on this poll, you chose`} )}
+                return res.status(404).json( {message: `You've already voted on this poll`} )}
 
             if(username === pollCheck[0].username){ return res.status(401).json({message: "You can't vote on your own poll"})}
             Polls.findOneAndUpdate( { "_id": ObjectId(pollId) }, query ).then( result => {

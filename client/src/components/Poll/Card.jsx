@@ -62,7 +62,7 @@ export default function PollCard(props) {
         <NavLink to={`/poll/${pollId}`} state={{ id: pollId }}>
         <IconButton className='cardButtons' aria-label="share" sx={{ color: 'var(--text)' }}>
         <Typography variant="body2" sx={{paddingRight:'5px', margin:0, color: 'var(--text)' }} gutterBottom>{cardStatus === 'current' ? 'View Votes' : 'Vote Now'}</Typography>
-          <BsFillArrowRightCircleFill  />
+        < BsFillArrowRightCircleFill className="voteButton"  />
         </IconButton>
         </NavLink>
         </div>
