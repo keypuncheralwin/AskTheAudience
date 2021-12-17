@@ -11,7 +11,8 @@ import { Button } from '@mui/material';
 import './comments.css' 
 import useStyles from "../pages/Authentication/formStyling"
 import axios from 'axios'
-
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
@@ -23,7 +24,9 @@ export default function Comments(props) {
     const comments = props.comments
     const refreshComments = props.refreshComments
     const pollId = props.pollId
-    console.log(pollId)
+    const [showStatus, setShowStatus] = useState(false)
+    const [statusText, setStatusText] = useState('')
+    const [statusColor, setStatusColor] = useState('')
 
     const classes = useStyles();
 
@@ -47,15 +50,19 @@ export default function Comments(props) {
         
         console.log('added comment',res)
         refreshComments()
-        console.log(comments)     
+        setShowStatus(true)
+        setStatusText(res.data.message)
+        setStatusColor('success')
+        setTimeout(function(){ setShowStatus(false) }, 4000);  
       })
       .catch(error => {
         
         console.log(error)
         
-        // console.log(error.message)
-        // manageLogin(getLoggedInUser)
-        // navigate("/login", { state: { sessionExpired: true} })
+        setShowStatus(true)
+        setStatusText("failed to add comment")
+        setStatusColor('error')
+        setTimeout(function(){ setShowStatus(false) }, 4000); 
 
       });
 
@@ -116,6 +123,7 @@ export default function Comments(props) {
 
   return (
     <div>
+    <Collapse className="singlePollStatus" in={showStatus} timeout={'auto'} >{showStatus ? <Alert severity={statusColor}>{statusText}</Alert> : ''}</Collapse> 
       <Accordion  expanded={isexpanded} sx={{ mt: 1, color: 'var(--text)', backgroundColor: 'var(--cardBackground)' }}>
         <AccordionSummary onClick={handleClick}
           expandIcon={<MdExpandMore sx={{ color: 'var(--text)'}} onClick={handleClick} />}
