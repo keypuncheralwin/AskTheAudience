@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3001;
 app.use(cookieParser())
 app.use(express.static("./client/build"));
 
+app.get('*', function(req, res) {
+    res.sendFile('index.html', {root: path.join(__dirname, './client/build')});
+  });
+
 const pollsController = require("./controllers/polls");
 const testController = require("./controllers/test")
 const usersController = require("./controllers/users")
