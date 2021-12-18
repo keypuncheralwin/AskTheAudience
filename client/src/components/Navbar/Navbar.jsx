@@ -9,7 +9,7 @@ import getLoggedInUser from '../pages/Authentication/checkAuth'
 
 const Navbar = (props) => {
 
-    const { userInfo, manageLogin } = props;
+    const { userInfo, manageLogin, manageSession } = props;
     const navigate = useNavigate()
         
     const [click, setClick] = useState(false)
@@ -26,6 +26,7 @@ const Navbar = (props) => {
     function handleLogOut(){
         Cookies.remove('token')
         manageLogin(getLoggedInUser())
+        manageSession(false)
         navigate("/")
     }
     

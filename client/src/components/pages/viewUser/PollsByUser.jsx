@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 
 const PollsByUser = (props) => {
 
-    const { userInfo, manageLogin } = props;
+    const { manageLogin } = props;
 
     const navigate = useNavigate()
     const {state} = useLocation();

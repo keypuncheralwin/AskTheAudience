@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const TrendingPolls = (props) => {
 
-    const { userInfo, manageLogin } = props;
+    const { manageLogin } = props;
 
     const navigate = useNavigate()
     

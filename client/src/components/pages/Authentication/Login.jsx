@@ -18,20 +18,27 @@ import getLoggedInUser from './checkAuth'
 export default function Login(props) {
 
   
-  const { userInfo, manageLogin } = props;
+  const { userInfo, manageLogin, manageSession, sessionExpired } = props;
 
   const navigate = useNavigate()
   userInfo && navigate("/myPolls")
 
   const {state} = useLocation();
-  const [sessionExpiry, setSessionExpiry] = useState(false)
+  
+  const [sessionAlert, setSessionAlert] = useState(false)
+
+  
 
   useEffect(() => {
     if(state){
       const { sessionExpired } = state;
-      setSessionExpiry(sessionExpired)    
+      setSessionAlert(sessionExpired)    
       }
-  },[state]);
+      
+      
+      if(sessionExpired){setSessionAlert(true)}
+      
+  });
   
   
 
@@ -61,6 +68,7 @@ export default function Login(props) {
         console.log('user logged in',res)
         setIsLoggedIn(true)
         manageLogin(getLoggedInUser)
+        userInfo && manageSession(false)
         navigate("/myPolls")        
       })
       .catch(error => {
@@ -92,7 +100,7 @@ export default function Login(props) {
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          {sessionExpiry ? <Alert severity="warning">Your session has expired, please log in again to continue!</Alert> : null}
+          {sessionAlert ? <Alert severity="warning">Your session has expired, please log in again to continue!</Alert> : null}
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
 
             <TextField required className={classes.root}

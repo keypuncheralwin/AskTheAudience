@@ -19,13 +19,15 @@ import axios from 'axios'
 
 export default function NewPoll(props){
 
-    const { userInfo, manageLogin } = props;
+    
+    const { userInfo, manageLogin, manageSession, sessionExpired } = props;
 
     const navigate = useNavigate()
 
     useEffect(() => {
     
         if(!userInfo){return navigate("/login")}
+        if(sessionExpired){return navigate("/login")}
   },)
 
     const initialOptions = ['', ''];
@@ -68,10 +70,13 @@ export default function NewPoll(props){
         setLoading(0)
         const data = new FormData(event.currentTarget);
         const submittedData = [...data]
-        if(!userInfo){return navigate("/login", { state: { sessionExpired: true} })}
+        if(!userInfo){
+          manageSession(true)
+          console.log('state is true')
+          return navigate("/login", { state: { sessionExpired: true } })
+        }
         
-        const getDate = new Date();
-        const currentDate = getDate.toString()
+        
         const formData = {
             "username": "",
             "title": "",
@@ -88,12 +93,13 @@ export default function NewPoll(props){
             }
     
         }
-        console.log(formData)
+        
 
       axios.post('/api/polls/new', formData)
       .then( res => { 
         setLoading(1)
         console.log('poll created',res)
+        manageSession(false)
         navigate("/myPolls")        
       })
       .catch(error => {
@@ -102,7 +108,9 @@ export default function NewPoll(props){
         
         console.log(error.message)
         manageLogin(getLoggedInUser)
+        manageSession(true)
         navigate("/login", { state: { sessionExpired: true} })
+        console.log('state is true')
 
       });
 

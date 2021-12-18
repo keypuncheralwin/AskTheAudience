@@ -18,6 +18,7 @@ import PollsByUser from './components/pages/viewUser/PollsByUser';
 function App() {
 
   const [ userInfo, setUserInfo ] = useState();
+  const [sessionExpired, setSessionExpired] = useState(false)
 
   function manageLogin(status){
     setUserInfo(status)
@@ -27,11 +28,15 @@ function App() {
     setUserInfo(getLoggedInUser())
   }, [])
 
+  function manageSession(status){
+    setSessionExpired(status)
+  }
+
   return (
     <div>
 
       <BrowserRouter>
-        <Navbar userInfo={userInfo} manageLogin={manageLogin}/>
+        <Navbar userInfo={userInfo} manageLogin={manageLogin} manageSession={manageSession} sessionExpired={sessionExpired}/>
         <div className="container" >
         <div className="content">
         <Routes>
@@ -39,9 +44,9 @@ function App() {
           <Route path="/trending" element={<TrendingPolls manageLogin={manageLogin}/>}></Route>
           <Route path="/recent" element={<RecentPolls manageLogin={manageLogin}/>}></Route>
           <Route path="/register" element={<Register userInfo={userInfo} />}></Route>
-          <Route path="/login" element={<Login userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
-          <Route path="/myPolls" element={<MyPolls userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
-          <Route path="/newPoll" element={<NewPoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
+          <Route path="/login" element={<Login userInfo={userInfo} manageLogin={manageLogin} manageSession={manageSession} sessionExpired={sessionExpired}/>}></Route>
+          <Route path="/myPolls" element={<MyPolls userInfo={userInfo} manageLogin={manageLogin} manageSession={manageSession} sessionExpired={sessionExpired}/>}></Route>
+          <Route path="/newPoll" element={<NewPoll userInfo={userInfo} manageLogin={manageLogin} manageSession={manageSession} sessionExpired={sessionExpired}/>} ></Route>
           <Route path="/poll/:pollId" element={<SinglePoll userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/polls/:username" element={<PollsByUser userInfo={userInfo} manageLogin={manageLogin}/>}></Route>
           <Route path="/test" element={<AlertDialog userInfo={userInfo} manageLogin={manageLogin}/>}></Route>

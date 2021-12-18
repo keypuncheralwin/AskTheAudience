@@ -10,7 +10,7 @@ import Link from '@mui/material/Link';
 
 const MyPolls = (props) => {
 
-    const { userInfo, manageLogin } = props;
+    const { userInfo, manageLogin, manageSession } = props;
 
     const navigate = useNavigate()
     
@@ -21,6 +21,11 @@ const MyPolls = (props) => {
     let cardClass = ''
     
     useEffect(() => {
+      if(!userInfo){
+        manageSession(true)
+        return navigate("/login")
+      }
+
         axios.get('api/polls/myPolls').then(res => {
           if(res.data.length >= 1){setRetrievedPolls(res.data)}
         }).catch(error => {

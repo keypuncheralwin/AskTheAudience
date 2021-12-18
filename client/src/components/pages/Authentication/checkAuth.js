@@ -10,6 +10,6 @@ export default function getLoggedInUser(){
         
         return decoded
     } else {
-        return undefined
+        return false
     }
 }
